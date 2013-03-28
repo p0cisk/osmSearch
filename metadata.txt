@@ -11,7 +11,7 @@
 [general]
 name=osmSearch
 qgisMinimumVersion=1.0
-description=Search OpenStreetMap data by name or address
+description=Search OpenStreetMap data by name or address using Nominating service
 version=0.1
 
 # end of mandatory metadata
@@ -24,9 +24,9 @@ version=0.1
 # tags are comma separated with spaces allowed
 tags=
 
-homepage=
-tracker=
-repository=
+homepage=https://github.com/p0cisk/osmSearch
+tracker=https://github.com/p0cisk/osmSearch/issues
+repository=https://github.com/p0cisk/osmSearch
 icon=icon.png
 # experimental flag
 experimental=True
@@ -35,5 +35,5 @@ experimental=True
 deprecated=False
 
 # Author contact information
-author=Piotr Pociask
-email=opengis84 (at) gmail (dot) com
+author=GIS Support, Piotr Pociask
+email=piotr.pociask (at) gis-support (dot) pl

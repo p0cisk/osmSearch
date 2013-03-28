@@ -23,7 +23,7 @@
 def name():
     return "osmSearch"
 def description():
-    return "Search OpenStreetMap data by name or address"
+    return "Search OpenStreetMap data by name or address using Nominatim service"
 def version():
     return "Version 0.1"
 def icon():
