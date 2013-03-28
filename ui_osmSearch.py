@@ -20,6 +20,8 @@ class QgsTreeWidget(QtGui.QTreeWidget):
         QtGui.QTreeWidget.__init__(self, parent)
 
     def mousePressEvent(self, event):
+        if self.itemAt(event.pos()) is None:
+            self.emit(QtCore.SIGNAL('clickedOutsideOfItems()'))
         self.clearSelection()
         QtGui.QTreeView.mousePressEvent(self, event)
 
@@ -39,6 +41,7 @@ class Ui_osmSearch(object):
         self.gridLayout.addWidget(self.bSearch, 0, 1, 1, 1)
         self.eOutput = QgsTreeWidget(self.dockWidgetContents)
         self.eOutput.setObjectName(_fromUtf8("eOutput"))
+        self.eOutput.setRootIsDecorated(False)
         self.gridLayout.addWidget(self.eOutput, 1, 0, 1, 2)
         self.cbCenter = QtGui.QCheckBox(self.dockWidgetContents)
         self.cbCenter.setChecked(True)
@@ -47,6 +50,8 @@ class Ui_osmSearch(object):
         osmSearch.setWidget(self.dockWidgetContents)
 
         self.retranslateUi(osmSearch)
+        self.eOutput.header().setResizeMode(0, QtGui.QHeaderView.Stretch)
+        self.eOutput.header().setStretchLastSection(False)
         QtCore.QObject.connect(self.eText, QtCore.SIGNAL(_fromUtf8("returnPressed()")), self.bSearch.click)
         QtCore.QMetaObject.connectSlotsByName(osmSearch)
 
@@ -55,6 +60,5 @@ class Ui_osmSearch(object):
         self.bSearch.setText(QtGui.QApplication.translate("osmSearch", "Search", None, QtGui.QApplication.UnicodeUTF8))
         self.eOutput.headerItem().setText(0, QtGui.QApplication.translate("osmSearch", "Name", None, QtGui.QApplication.UnicodeUTF8))
         self.eOutput.headerItem().setText(1, QtGui.QApplication.translate("osmSearch", "Type", None, QtGui.QApplication.UnicodeUTF8))
-        self.eOutput.headerItem().setText(2, QtGui.QApplication.translate("osmSearch", "Geometry", None, QtGui.QApplication.UnicodeUTF8))
         self.cbCenter.setText(QtGui.QApplication.translate("osmSearch", "Autocenter map canvas", None, QtGui.QApplication.UnicodeUTF8))
 

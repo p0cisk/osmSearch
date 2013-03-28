@@ -18,8 +18,13 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+ TODO:
+ - cache results
+ - autocomplete from history
+ - copy results to layer
+ - choose nomiantim server
 """
-from PyQt4.QtCore import QObject, SIGNAL, Qt
+from PyQt4.QtCore import QObject, SIGNAL, Qt, QVariant
 from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget
 from qgis.core import QGis, QgsGeometry, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle
 from qgis.gui import QgsRubberBand
@@ -44,6 +49,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         
         QObject.connect(self.bSearch, SIGNAL("clicked()"),self.startSearch)
         QObject.connect(self.eOutput, SIGNAL("currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)"),self.itemChanged)
+        QObject.connect(self.eOutput, SIGNAL("clickedOutsideOfItems()"),self.itemChanged)
         QObject.connect(self.eText, SIGNAL("cleared()"),self.clearEdit)
         QObject.connect(self.iface.mapCanvas().mapRenderer(), SIGNAL("destinationSrsChanged()"),self.srsChanged)
         QObject.connect(self.iface, SIGNAL("newProjectCreated ()"),self.clearEdit)
@@ -69,13 +75,14 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
                 geometry = d['geotext']
             except KeyError:
                 geometry = 'POINT(%s %s)' % (d['lon'], d['lat'])
-            item = QTreeWidgetItem([d['display_name'], d['type'], geometry])
+            item = QTreeWidgetItem([d['display_name'], d['type']])
+            item.setData(0, Qt.UserRole, QVariant(geometry))
             items.append(item)
         self.eOutput.insertTopLevelItems(0, items)
 
-    def itemChanged(self, current, previous):
+    def itemChanged(self, current=None, previous=None):
         if current:
-            wkt = str(current.text(2))
+            wkt = str(current.data(0,Qt.UserRole).toString())
             geom = QgsGeometry.fromWkt(wkt)
             if self.proj.srsid() != 4326:
                 geom.transform(self.transform)
@@ -84,6 +91,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
                 self.moveCanvas(geom.centroid().asPoint(), self.iface.mapCanvas().extent())
         else:
             self.rb.reset(QGis.Point)
+            self.eOutput.setCurrentItem(None)
 
     def srsChanged(self):
         self.proj = self.iface.mapCanvas().mapRenderer().destinationCrs()
