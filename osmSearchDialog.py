@@ -36,7 +36,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
     def __init__(self,iface):
         self.iface = iface
         QDockWidget.__init__(self)
-        self.setupUi(self)        
+        self.setupUi(self)
         self.iface.addDockWidget(Qt.BottomDockWidgetArea,self)
         
         self.rb = QgsRubberBand(self.iface.mapCanvas(), QGis.Point)

@@ -47,6 +47,11 @@ class Ui_osmSearch(object):
         self.cbCenter.setChecked(True)
         self.cbCenter.setObjectName(_fromUtf8("cbCenter"))
         self.gridLayout.addWidget(self.cbCenter, 2, 0, 1, 1)
+        self.lblInfo = QtGui.QLabel(self.dockWidgetContents)
+        self.lblInfo.setOpenExternalLinks(True)
+        self.lblInfo.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
+        self.lblInfo.setObjectName(_fromUtf8("lblInfo"))
+        self.gridLayout.addWidget(self.lblInfo, 2, 1, 1, 1)
         osmSearch.setWidget(self.dockWidgetContents)
 
         self.retranslateUi(osmSearch)
@@ -61,4 +66,9 @@ class Ui_osmSearch(object):
         self.eOutput.headerItem().setText(0, QtGui.QApplication.translate("osmSearch", "Name", None, QtGui.QApplication.UnicodeUTF8))
         self.eOutput.headerItem().setText(1, QtGui.QApplication.translate("osmSearch", "Type", None, QtGui.QApplication.UnicodeUTF8))
         self.cbCenter.setText(QtGui.QApplication.translate("osmSearch", "Autocenter map canvas", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblInfo.setText(QtGui.QApplication.translate("osmSearch", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">© </span><a href=\"http://www.openstreetmap.org/\"><span style=\" font-size:8pt; text-decoration: underline; color:#0000ff;\">OpenStreetMap</span></a><span style=\" font-size:8pt;\"> contributors</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
 
