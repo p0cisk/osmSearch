@@ -25,7 +25,7 @@
  - choose nomiantim server
 """
 from PyQt4.QtCore import QObject, SIGNAL, Qt, QVariant
-from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget
+from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget, QMessageBox
 from qgis.core import QGis, QgsGeometry, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle
 from qgis.gui import QgsRubberBand
 
@@ -78,7 +78,10 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             item = QTreeWidgetItem([d['display_name'], d['type']])
             item.setData(0, Qt.UserRole, QVariant(geometry))
             items.append(item)
-        self.eOutput.insertTopLevelItems(0, items)
+        if items:
+            self.eOutput.insertTopLevelItems(0, items)
+        else:
+            QMessageBox.warning(None, 'osmSearch', 'Nothing was found!')
 
     def itemChanged(self, current=None, previous=None):
         if current:
