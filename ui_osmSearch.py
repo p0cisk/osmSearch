@@ -8,7 +8,10 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-from qgis.gui import QgsFilterLineEdit
+try:
+    from qgis.gui import QgsFilterLineEdit
+except:
+    from utils import QgsFilterLineEdit
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8

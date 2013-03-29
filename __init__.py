@@ -3,11 +3,11 @@
 /***************************************************************************
  osmSearch
                                  A QGIS plugin
- Save notes in QGIS projects
+Search OpenStreetMap data by name or address using Nominating service
                              -------------------
-        begin                : 2012-03-31
-        copyright            : (C) 2012 by Piotr Pociask
-        email                : opengis84 (at) gmail (dot) com
+        begin                : 2013-03-29
+        copyright            : (C) 2013 by Piotr Pociask
+        email                : piotr.pociask (at) gis-support (dot) pl
  ***************************************************************************/
 
 /***************************************************************************
