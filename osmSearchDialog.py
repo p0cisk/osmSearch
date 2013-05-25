@@ -39,20 +39,21 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         QDockWidget.__init__(self)
         self.setupUi(self)
         self.iface.addDockWidget(Qt.BottomDockWidgetArea,self)
+        self.canvas = self.iface.mapCanvas()
         
-        self.rb = QgsRubberBand(self.iface.mapCanvas(), QGis.Point)
+        self.rb = QgsRubberBand(self.canvas(), QGis.Point)
         self.rb.setColor(QColor('red'))
         
         self.wgs84 = QgsCoordinateReferenceSystem()
         self.wgs84.createFromSrid(4326)
-        self.proj = self.iface.mapCanvas().mapRenderer().destinationCrs()
+        self.proj = self.canvas.mapRenderer().destinationCrs()
         self.transform = QgsCoordinateTransform(self.wgs84, self.proj)
         
         QObject.connect(self.bSearch, SIGNAL("clicked()"),self.startSearch)
         QObject.connect(self.eOutput, SIGNAL("currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)"),self.itemChanged)
         QObject.connect(self.eOutput, SIGNAL("clickedOutsideOfItems()"),self.itemChanged)
         QObject.connect(self.eText, SIGNAL("cleared()"),self.clearEdit)
-        QObject.connect(self.iface.mapCanvas().mapRenderer(), SIGNAL("destinationSrsChanged()"),self.srsChanged)
+        QObject.connect(self.canvas.mapRenderer(), SIGNAL("destinationSrsChanged()"),self.srsChanged)
         QObject.connect(self.iface, SIGNAL("newProjectCreated ()"),self.clearEdit)
         QObject.connect(self.iface, SIGNAL("projectRead ()"),self.clearEdit)
         QObject.connect(self.cbCenter, SIGNAL("stateChanged (int)"),self.autocenter )
@@ -92,13 +93,13 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
                 geom.transform(self.transform)
             self.rb.setToGeometry(geom, None)
             if self.cbCenter.isChecked():
-                self.moveCanvas(geom.centroid().asPoint(), self.iface.mapCanvas().extent())
+                self.moveCanvas(geom.centroid().asPoint(), self.canvas.extent())
         else:
             self.rb.reset(QGis.Point)
             self.eOutput.setCurrentItem(None)
 
     def srsChanged(self):
-        self.proj = self.iface.mapCanvas().mapRenderer().destinationCrs()
+        self.proj = self.canvas.mapRenderer().destinationCrs()
         self.transform = QgsCoordinateTransform(self.wgs84, self.proj)
 
     def clearEdit(self):
@@ -108,11 +109,11 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
 
     def autocenter(self, state):
         if state and self.rb.size():
-            self.moveCanvas(self.rb.asGeometry().centroid().asPoint(), self.iface.mapCanvas().extent())
+            self.moveCanvas(self.rb.asGeometry().centroid().asPoint(), self.canvas.extent())
 
     def moveCanvas(self, newCenter, oldExtent):
         newExtent = QgsRectangle(oldExtent)
         newExtent.scale(1, newCenter)
-        self.iface.mapCanvas().setExtent(newExtent)
-        self.iface.mapCanvas().refresh()
+        self.canvas.setExtent(newExtent)
+        self.canvas.refresh()
 
