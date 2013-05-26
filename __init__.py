@@ -29,9 +29,8 @@ def version():
 def icon():
     return "icon.png"
 def qgisMinimumVersion():
-    return "1.0"
+    return "1.9"
 def classFactory(iface):
-    # load qNote class from file qNote
     from osmSearch import osmSearch
     return osmSearch(iface)
 

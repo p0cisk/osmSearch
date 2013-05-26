@@ -10,7 +10,7 @@
 
 [general]
 name=osmSearch
-qgisMinimumVersion=1.0
+qgisMinimumVersion=1.9
 description=Search OpenStreetMap data by name or address using Nominating service
 version=0.1
 
@@ -22,7 +22,7 @@ version=0.1
 # changelog=
 
 # tags are comma separated with spaces allowed
-tags=
+tags=openstreetmap
 
 homepage=https://github.com/p0cisk/osmSearch
 tracker=https://github.com/p0cisk/osmSearch/issues
@@ -35,5 +35,5 @@ experimental=True
 deprecated=False
 
 # Author contact information
-author=GIS Support, Piotr Pociask
+author=GIS Support sp. z o.o., Piotr Pociask
 email=piotr.pociask (at) gis-support (dot) pl

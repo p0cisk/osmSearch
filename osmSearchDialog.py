@@ -28,7 +28,7 @@
 from PyQt4.QtCore import QObject, SIGNAL, Qt, QVariant
 from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget, QMessageBox
 from qgis.core import QGis, QgsGeometry, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle
-from qgis.gui import QgsRubberBand
+from qgis.gui import QgsRubberBand, QgsMessageBar
 
 import urllib, urllib2, json
 from ui_osmSearch import Ui_osmSearch
@@ -41,7 +41,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         self.iface.addDockWidget(Qt.BottomDockWidgetArea,self)
         self.canvas = self.iface.mapCanvas()
         
-        self.rb = QgsRubberBand(self.canvas(), QGis.Point)
+        self.rb = QgsRubberBand(self.canvas, QGis.Point)
         self.rb.setColor(QColor('red'))
         
         self.wgs84 = QgsCoordinateReferenceSystem()
@@ -53,7 +53,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         QObject.connect(self.eOutput, SIGNAL("currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)"),self.itemChanged)
         QObject.connect(self.eOutput, SIGNAL("clickedOutsideOfItems()"),self.itemChanged)
         QObject.connect(self.eText, SIGNAL("cleared()"),self.clearEdit)
-        QObject.connect(self.canvas.mapRenderer(), SIGNAL("destinationSrsChanged()"),self.srsChanged)
+        QObject.connect(self.canvas.mapRenderer(), SIGNAL("destinationSrsChanged()"),self.crsChanged)
         QObject.connect(self.iface, SIGNAL("newProjectCreated ()"),self.clearEdit)
         QObject.connect(self.iface, SIGNAL("projectRead ()"),self.clearEdit)
         QObject.connect(self.cbCenter, SIGNAL("stateChanged (int)"),self.autocenter )
@@ -83,7 +83,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         if items:
             self.eOutput.insertTopLevelItems(0, items)
         else:
-            QMessageBox.warning(None, 'osmSearch', 'Nothing was found!')
+            self.iface.messageBar().pushMessage('Nothing was found!', QgsMessageBar.CRITICAL, 2)
 
     def itemChanged(self, current=None, previous=None):
         if current:
@@ -98,7 +98,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             self.rb.reset(QGis.Point)
             self.eOutput.setCurrentItem(None)
 
-    def srsChanged(self):
+    def crsChanged(self):
         self.proj = self.canvas.mapRenderer().destinationCrs()
         self.transform = QgsCoordinateTransform(self.wgs84, self.proj)
 
