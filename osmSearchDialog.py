@@ -26,7 +26,7 @@
  - limit search to visible area
 """
 from PyQt4.QtCore import QObject, SIGNAL, Qt, QVariant
-from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget, QMessageBox
+from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget, QMessageBox, QIcon
 from qgis.core import QGis, QgsGeometry, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle
 from qgis.gui import QgsRubberBand, QgsMessageBar
 
@@ -79,6 +79,12 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
                 geometry = 'POINT(%s %s)' % (d['lon'], d['lat'])
             item = QTreeWidgetItem([d['display_name'], d['type']])
             item.setData(0, Qt.UserRole, QVariant(geometry))
+            if geometry.lower().startswith('point'):
+                item.setIcon(0, QIcon(':/plugins/osmSearch/icons/mIconPointLayer.png'))
+            elif geometry.lower().startswith('linestring'):
+                item.setIcon(0, QIcon(':/plugins/osmSearch/icons/mIconLineLayer.png'))
+            elif geometry.lower().startswith('polygon'):
+                item.setIcon(0, QIcon(':/plugins/osmSearch/icons/mIconPolygonLayer.png'))
             items.append(item)
         if items:
             self.eOutput.insertTopLevelItems(0, items)
