@@ -22,7 +22,6 @@
 # Import the PyQt and QGIS libraries
 from qgis.core import  QGis
 from osmSearchDialog import osmSearchDialog
-import resources
 
 class osmSearch:
     def __init__(self, iface):

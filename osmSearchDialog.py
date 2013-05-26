@@ -27,7 +27,7 @@
 """
 from PyQt4.QtCore import QObject, SIGNAL, Qt, QVariant
 from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget, QMessageBox, QIcon
-from qgis.core import QGis, QgsGeometry, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle
+from qgis.core import QGis, QgsGeometry, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle, QgsApplication
 from qgis.gui import QgsRubberBand, QgsMessageBar
 
 import urllib, urllib2, json
@@ -80,11 +80,11 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             item = QTreeWidgetItem([d['display_name'], d['type']])
             item.setData(0, Qt.UserRole, QVariant(geometry))
             if geometry.lower().startswith('point'):
-                item.setIcon(0, QIcon(':/plugins/osmSearch/icons/mIconPointLayer.png'))
+                item.setIcon(0, QgsApplication.getThemeIcon('/mIconPointLayer.png'))
             elif geometry.lower().startswith('linestring'):
-                item.setIcon(0, QIcon(':/plugins/osmSearch/icons/mIconLineLayer.png'))
+                item.setIcon(0, QgsApplication.getThemeIcon('/mIconLineLayer.png'))
             elif geometry.lower().startswith('polygon'):
-                item.setIcon(0, QIcon(':/plugins/osmSearch/icons/mIconPolygonLayer.png'))
+                item.setIcon(0, QgsApplication.getThemeIcon('/mIconPolygonLayer.png'))
             items.append(item)
         if items:
             self.eOutput.insertTopLevelItems(0, items)
