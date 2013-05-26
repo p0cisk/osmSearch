@@ -96,7 +96,12 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             wkt = str(current.data(0,Qt.UserRole).toString())
             geom = QgsGeometry.fromWkt(wkt)
             if self.proj.srsid() != 4326:
-                geom.transform(self.transform)
+                try:
+                    geom.transform(self.transform)
+                except:
+                    self.iface.messageBar().pushMessage('CRS transformation error!', QgsMessageBar.CRITICAL, 2)
+                    self.rb.reset(QGis.Point)
+                    return
             self.rb.setToGeometry(geom, None)
             if self.cbCenter.isChecked():
                 self.moveCanvas(geom.centroid().asPoint(), self.canvas.extent())
