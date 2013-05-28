@@ -23,7 +23,7 @@ Search OpenStreetMap data by name or address using Nominating service
 def name():
     return "osmSearch"
 def description():
-    return "Search OpenStreetMap data by name or address using Nominatim service"
+    return "Search OpenStreetMap data by name or address using Nominatim service (QGIS >= 1.9 required)"
 def version():
     return "Version 0.1"
 def icon():

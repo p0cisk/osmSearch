@@ -11,7 +11,7 @@
 [general]
 name=osmSearch
 qgisMinimumVersion=1.9
-description=Search OpenStreetMap data by name or address using Nominating service
+description=Search OpenStreetMap data by name or address using Nominating service (QGIS >= 1.9 required)
 version=0.1
 
 # end of mandatory metadata
