@@ -44,6 +44,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         
         self.rb = QgsRubberBand(self.canvas, QGis.Point)
         self.rb.setColor(QColor('red'))
+        self.searchCacheLimit = 1000
         
         self.wgs84 = QgsCoordinateReferenceSystem()
         self.wgs84.createFromSrid(4326)
@@ -60,9 +61,9 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         QObject.connect(self.cbCenter, SIGNAL("stateChanged (int)"),self.autocenter)
         
         db = cacheDB()
-        self.autocompleteDict = db.getAutocompleteList()
+        self.autocompleteList = db.getAutocompleteList()
         db.closeConnection()
-        self.completer = QCompleter(self.autocompleteDict.keys())
+        self.completer = QCompleter(self.autocompleteList)
         self.completer.setCaseSensitivity(Qt.CaseInsensitive)
         self.eText.setCompleter(self.completer)
 
@@ -96,8 +97,8 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             items.append(item)
         if items:
             self.eOutput.insertTopLevelItems(0, items)
-            self.autocompleteDict[unicode(self.eText.text().toLower())] = ''
-            self.setCompleter()
+            self.addSearchTerm(unicode(self.eText.text().toLower()))
+            
         else:
             self.iface.messageBar().pushMessage('Nothing was found!', QgsMessageBar.CRITICAL, 2)
 
@@ -129,7 +130,14 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         self.rb.reset(QGis.Point)
     
     def setCompleter(self):
-        self.completer.model().setStringList(self.autocompleteDict.keys())
+        self.completer.model().setStringList(self.autocompleteList)
+    
+    def addSearchTerm(self, text):
+        if not text in self.autocompleteList:
+            self.autocompleteList.append(text)
+            self.setCompleter()
+        while len(self.autocompleteList) > self.searchCacheLimit:
+            self.autocompleteList.pop(0)
 
     def autocenter(self, state):
         if state and self.rb.size():

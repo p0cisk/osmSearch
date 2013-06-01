@@ -37,4 +37,4 @@ class osmSearch:
         self.dock.rb.reset(QGis.Point)
         del self.dock.rb
         db = cacheDB()
-        db.addAutocompleteList(self.dock.autocompleteDict.keys())
+        db.addAutocompleteList(self.dock.autocompleteList)
