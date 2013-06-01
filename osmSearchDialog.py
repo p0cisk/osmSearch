@@ -63,6 +63,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         self.autocompleteDict = db.getAutocompleteList()
         db.closeConnection()
         self.completer = QCompleter(self.autocompleteDict.keys())
+        self.completer.setCaseSensitivity(Qt.CaseInsensitive)
         self.eText.setCompleter(self.completer)
 
     def startSearch(self):
@@ -95,7 +96,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             items.append(item)
         if items:
             self.eOutput.insertTopLevelItems(0, items)
-            self.autocompleteDict[unicode(self.eText.text())] = ''
+            self.autocompleteDict[unicode(self.eText.text().toLower())] = ''
             self.setCompleter()
         else:
             self.iface.messageBar().pushMessage('Nothing was found!', QgsMessageBar.CRITICAL, 2)
