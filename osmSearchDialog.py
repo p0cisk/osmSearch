@@ -25,13 +25,14 @@
  - choose nomiantim server
  - limit search to visible area
 """
-from PyQt4.QtCore import QObject, SIGNAL, Qt, QVariant
-from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget, QMessageBox, QIcon
+from PyQt4.QtCore import QObject, SIGNAL, Qt, QVariant, QStringList, QString
+from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget, QMessageBox, QCompleter
 from qgis.core import QGis, QgsGeometry, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle, QgsApplication
 from qgis.gui import QgsRubberBand, QgsMessageBar
 
 import urllib, urllib2, json
 from ui_osmSearch import Ui_osmSearch
+from cacheDB import cacheDB
 
 class osmSearchDialog(QDockWidget , Ui_osmSearch ):
     def __init__(self,iface):
@@ -56,10 +57,16 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         QObject.connect(self.canvas.mapRenderer(), SIGNAL("destinationSrsChanged()"),self.crsChanged)
         QObject.connect(self.iface, SIGNAL("newProjectCreated ()"),self.clearEdit)
         QObject.connect(self.iface, SIGNAL("projectRead ()"),self.clearEdit)
-        QObject.connect(self.cbCenter, SIGNAL("stateChanged (int)"),self.autocenter )
+        QObject.connect(self.cbCenter, SIGNAL("stateChanged (int)"),self.autocenter)
+        
+        db = cacheDB()
+        self.autocompleteDict = db.getAutocompleteList()
+        db.closeConnection()
+        self.completer = QCompleter(self.autocompleteDict.keys())
+        self.eText.setCompleter(self.completer)
 
     def startSearch(self):
-        text = str(self.eText.text().toUtf8())
+        text = self.eText.text().toUtf8()
         if text == "":
             self.clearEdit()
         #url = 'http://open.mapquestapi.com/nominatim/v1/search.php'
@@ -67,6 +74,8 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         params = urllib.urlencode({'q': text,'format': 'json','polygon_text':'1'})
         response = json.load(urllib2.urlopen(url+'?'+params))
         self.loadData(response)
+        self.autocompleteDict[unicode(self.eText.text())] = ''
+        self.setCompleter()
 
     def loadData(self, data):
         self.rb.reset(QGis.Point)
@@ -117,6 +126,9 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         self.eOutput.clear()
         self.eText.clear()
         self.rb.reset(QGis.Point)
+    
+    def setCompleter(self):
+        self.completer.model().setStringList(self.autocompleteDict.keys())
 
     def autocenter(self, state):
         if state and self.rb.size():
@@ -127,4 +139,3 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         newExtent.scale(1, newCenter)
         self.canvas.setExtent(newExtent)
         self.canvas.refresh()
-

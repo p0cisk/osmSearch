@@ -22,6 +22,7 @@
 # Import the PyQt and QGIS libraries
 from qgis.core import  QGis
 from osmSearchDialog import osmSearchDialog
+from cacheDB import cacheDB
 
 class osmSearch:
     def __init__(self, iface):
@@ -35,3 +36,5 @@ class osmSearch:
         self.iface.removeDockWidget(self.dock)
         self.dock.rb.reset(QGis.Point)
         del self.dock.rb
+        db = cacheDB()
+        db.addAutocompleteList(self.dock.autocompleteDict.keys())
