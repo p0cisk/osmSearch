@@ -74,8 +74,6 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         params = urllib.urlencode({'q': text,'format': 'json','polygon_text':'1'})
         response = json.load(urllib2.urlopen(url+'?'+params))
         self.loadData(response)
-        self.autocompleteDict[unicode(self.eText.text())] = ''
-        self.setCompleter()
 
     def loadData(self, data):
         self.rb.reset(QGis.Point)
@@ -97,6 +95,8 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             items.append(item)
         if items:
             self.eOutput.insertTopLevelItems(0, items)
+            self.autocompleteDict[unicode(self.eText.text())] = ''
+            self.setCompleter()
         else:
             self.iface.messageBar().pushMessage('Nothing was found!', QgsMessageBar.CRITICAL, 2)
 
