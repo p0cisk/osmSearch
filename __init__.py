@@ -25,7 +25,7 @@ def name():
 def description():
     return "Search OpenStreetMap data by name or address using Nominatim service (QGIS >= 1.9 required)"
 def version():
-    return "Version 0.1"
+    return "Version 0.2"
 def icon():
     return "icon.png"
 def qgisMinimumVersion():

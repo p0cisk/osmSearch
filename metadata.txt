@@ -12,14 +12,23 @@
 name=osmSearch
 qgisMinimumVersion=1.9
 description=Search OpenStreetMap data by name or address using Nominating service (QGIS >= 1.9 required)
-version=0.1
+version=0.2
 
 # end of mandatory metadata
 
 # Optional items:
 
 # Uncomment the following line and add your changelog entries:
-# changelog=
+changelog=0.2
+    - autocomplete in search edit
+    
+    0.1
+    - search Nominatim service
+    - clear button in text edit
+    - display results in map canvas
+    - autocenter map canvas
+    - display info in QgsMessageBar
+    - geometry type as item icon
 
 # tags are comma separated with spaces allowed
 tags=openstreetmap
@@ -35,5 +44,5 @@ experimental=True
 deprecated=False
 
 # Author contact information
-author=GIS Support sp. z o.o., Piotr Pociask
-email=piotr.pociask (at) gis-support (dot) pl
+author=GIS Support, Piotr Pociask
+email=piotr.pociask@gis-suppor.pl

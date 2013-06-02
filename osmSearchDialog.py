@@ -20,7 +20,6 @@
  ***************************************************************************/
  TODO:
  - cache results
- - autocomplete from history
  - copy results to layer
  - choose nomiantim server
  - limit search to visible area
