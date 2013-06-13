@@ -10,16 +10,19 @@
 
 [general]
 name=osmSearch
-qgisMinimumVersion=1.9
+qgisMinimumVersion=2.0
 description=Search OpenStreetMap data by name or address using Nominating service (QGIS >= 1.9 required)
-version=0.2
+version=0.3
 
 # end of mandatory metadata
 
 # Optional items:
 
 # Uncomment the following line and add your changelog entries:
-changelog=0.2
+changelog=0.3
+    - swicthed to PyQt API version 2
+    
+    0.2
     - autocomplete in search edit
     
     0.1

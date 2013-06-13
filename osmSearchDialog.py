@@ -24,7 +24,7 @@
  - choose nomiantim server
  - limit search to visible area
 """
-from PyQt4.QtCore import QObject, SIGNAL, Qt, QVariant, QStringList, QString
+from PyQt4.QtCore import QObject, SIGNAL, Qt
 from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget, QMessageBox, QCompleter
 from qgis.core import QGis, QgsGeometry, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle, QgsApplication
 from qgis.gui import QgsRubberBand, QgsMessageBar
@@ -67,7 +67,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         self.eText.setCompleter(self.completer)
 
     def startSearch(self):
-        text = self.eText.text().toUtf8()
+        text = self.eText.text()
         if text == "":
             self.clearEdit()
         #url = 'http://open.mapquestapi.com/nominatim/v1/search.php'
@@ -86,7 +86,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             except KeyError:
                 geometry = 'POINT(%s %s)' % (d['lon'], d['lat'])
             item = QTreeWidgetItem([d['display_name'], d['type']])
-            item.setData(0, Qt.UserRole, QVariant(geometry))
+            item.setData(0, Qt.UserRole, geometry)
             if geometry.lower().startswith('point'):
                 item.setIcon(0, QgsApplication.getThemeIcon('/mIconPointLayer.png'))
             elif geometry.lower().startswith('linestring'):
@@ -96,14 +96,14 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             items.append(item)
         if items:
             self.eOutput.insertTopLevelItems(0, items)
-            self.addSearchTerm(unicode(self.eText.text().toLower()))
+            self.addSearchTerm(unicode(self.eText.text().lower()))
             
         else:
             self.iface.messageBar().pushMessage('Nothing was found!', QgsMessageBar.CRITICAL, 2)
 
     def itemChanged(self, current=None, previous=None):
         if current:
-            wkt = str(current.data(0,Qt.UserRole).toString())
+            wkt = str(current.data(0,Qt.UserRole))
             geom = QgsGeometry.fromWkt(wkt)
             if self.proj.srsid() != 4326:
                 try:
