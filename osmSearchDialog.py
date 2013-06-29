@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  osmSearchDialog
@@ -72,7 +72,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             self.clearEdit()
         #url = 'http://open.mapquestapi.com/nominatim/v1/search.php'
         url = 'http://nominatim.openstreetmap.org/search'
-        params = urllib.urlencode({'q': text,'format': 'json','polygon_text':'1'})
+        params = urllib.urlencode({'q': text.encode('utf-8'),'format': 'json','polygon_text':'1'})
         response = json.load(urllib2.urlopen(url+'?'+params))
         self.loadData(response)
 
