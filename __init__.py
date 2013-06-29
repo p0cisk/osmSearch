@@ -20,13 +20,6 @@ Search OpenStreetMap data by name or address using Nominating service
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
-def name():
-    return "osmSearch"
-def description():
-    return "Search OpenStreetMap data by name or address using Nominatim service (QGIS >= 2.0 required)"
-def icon():
-    return "icon.png"
 def classFactory(iface):
     from osmSearch import osmSearch
     return osmSearch(iface)
-

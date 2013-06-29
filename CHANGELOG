@@ -1,7 +1,0 @@
-0.1
-- search Nominatim service
-- clear button in text edit
-- display results in map canvas
-- autocenter map canvas
-- display info in QgsMessageBar
-- geometry type as item icon

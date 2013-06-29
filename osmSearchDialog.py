@@ -24,7 +24,7 @@
  - choose nomiantim server
  - limit search to visible area
 """
-from PyQt4.QtCore import QObject, SIGNAL, Qt
+from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QTreeWidgetItem, QColor, QDockWidget, QMessageBox, QCompleter
 from qgis.core import QGis, QgsGeometry, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle, QgsApplication
 from qgis.gui import QgsRubberBand, QgsMessageBar
