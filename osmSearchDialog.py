@@ -50,14 +50,14 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         self.proj = self.canvas.mapRenderer().destinationCrs()
         self.transform = QgsCoordinateTransform(self.wgs84, self.proj)
         
-        QObject.connect(self.bSearch, SIGNAL("clicked()"),self.startSearch)
-        QObject.connect(self.eOutput, SIGNAL("currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)"),self.itemChanged)
-        QObject.connect(self.eOutput, SIGNAL("clickedOutsideOfItems()"),self.itemChanged)
-        QObject.connect(self.eText, SIGNAL("cleared()"),self.clearEdit)
-        QObject.connect(self.canvas.mapRenderer(), SIGNAL("destinationSrsChanged()"),self.crsChanged)
-        QObject.connect(self.iface, SIGNAL("newProjectCreated ()"),self.clearEdit)
-        QObject.connect(self.iface, SIGNAL("projectRead ()"),self.clearEdit)
-        QObject.connect(self.cbCenter, SIGNAL("stateChanged (int)"),self.autocenter)
+        self.bSearch.clicked.connect(self.startSearch)
+        self.eOutput.currentItemChanged.connect(self.itemChanged)
+        self.eOutput.clickedOutsideOfItems.connect(self.itemChanged)
+        self.eText.cleared.connect(self.clearEdit)
+        self.canvas.mapRenderer().destinationSrsChanged.connect(self.crsChanged)
+        self.iface.newProjectCreated.connect(self.clearEdit)
+        self.iface.projectRead.connect(self.clearEdit)
+        self.cbCenter.stateChanged.connect(self.autocenter)
         
         db = cacheDB()
         self.autocompleteList = db.getAutocompleteList()
@@ -126,7 +126,8 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
     def clearEdit(self):
         self.eOutput.clear()
         self.eText.clear()
-        self.rb.reset(QGis.Point)
+        if hasattr(self, 'rb'):
+            self.rb.reset(QGis.Point)
     
     def setCompleter(self):
         self.completer.model().setStringList(self.autocompleteList)

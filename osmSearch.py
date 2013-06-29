@@ -33,6 +33,15 @@ class osmSearch:
         self.dock  = osmSearchDialog(self.iface)
 
     def unload(self):
+        self.dock.bSearch.clicked.disconnect(self.dock.startSearch)
+        self.dock.eOutput.currentItemChanged.disconnect(self.dock.itemChanged)
+        self.dock.eOutput.clickedOutsideOfItems.disconnect(self.dock.itemChanged)
+        self.dock.eText.cleared.disconnect(self.dock.clearEdit)
+        self.dock.canvas.mapRenderer().destinationSrsChanged.disconnect(self.dock.crsChanged)
+        self.dock.iface.newProjectCreated.disconnect(self.dock.clearEdit)
+        self.dock.iface.projectRead.disconnect(self.dock.clearEdit)
+        self.dock.cbCenter.stateChanged.disconnect(self.dock.autocenter)
+        
         self.iface.removeDockWidget(self.dock)
         self.dock.rb.reset(QGis.Point)
         del self.dock.rb

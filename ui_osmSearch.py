@@ -16,12 +16,14 @@ except AttributeError:
     _fromUtf8 = lambda s: s
 
 class QgsTreeWidget(QtGui.QTreeWidget):
+    clickedOutsideOfItems = QtCore.pyqtSignal()
+    
     def __init(self, parent=None):
         QtGui.QTreeWidget.__init__(self, parent)
 
     def mousePressEvent(self, event):
         if self.itemAt(event.pos()) is None:
-            self.emit(QtCore.SIGNAL('clickedOutsideOfItems()'))
+            self.clickedOutsideOfItems.emit()
         self.clearSelection()
         QtGui.QTreeView.mousePressEvent(self, event)
 
