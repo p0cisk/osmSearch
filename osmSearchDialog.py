@@ -42,7 +42,7 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         self.canvas = self.iface.mapCanvas()
         
         self.rb = QgsRubberBand(self.canvas, QGis.Point)
-        self.rb.setColor(QColor('red'))
+        self.rb.setColor(QColor( 255, 0, 0, 150 ))
         self.searchCacheLimit = 1000
         
         self.wgs84 = QgsCoordinateReferenceSystem()
@@ -67,12 +67,12 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
         self.eText.setCompleter(self.completer)
 
     def startSearch(self):
-        text = self.eText.text()
+        text = self.eText.text().encode('utf-8')
         if text == "":
             self.clearEdit()
         #url = 'http://open.mapquestapi.com/nominatim/v1/search.php'
         url = 'http://nominatim.openstreetmap.org/search'
-        params = urllib.urlencode({'q': text.encode('utf-8'),'format': 'json','polygon_text':'1'})
+        params = urllib.urlencode({'q': text,'format': 'json','polygon_text':'1'})
         response = json.load(urllib2.urlopen(url+'?'+params))
         self.loadData(response)
 
