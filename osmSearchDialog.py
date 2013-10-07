@@ -88,11 +88,11 @@ class osmSearchDialog(QDockWidget , Ui_osmSearch ):
             item = QTreeWidgetItem([d['display_name'], d['type']])
             item.setData(0, Qt.UserRole, geometry)
             if geometry.lower().startswith('point'):
-                item.setIcon(0, QgsApplication.getThemeIcon('/mIconPointLayer.png'))
+                item.setIcon(0, QgsApplication.getThemeIcon('/mIconPointLayer.svg'))
             elif geometry.lower().startswith('linestring'):
-                item.setIcon(0, QgsApplication.getThemeIcon('/mIconLineLayer.png'))
+                item.setIcon(0, QgsApplication.getThemeIcon('/mIconLineLayer.svg'))
             elif geometry.lower().startswith('polygon'):
-                item.setIcon(0, QgsApplication.getThemeIcon('/mIconPolygonLayer.png'))
+                item.setIcon(0, QgsApplication.getThemeIcon('/mIconPolygonLayer.svg'))
             items.append(item)
         if items:
             self.eOutput.insertTopLevelItems(0, items)
